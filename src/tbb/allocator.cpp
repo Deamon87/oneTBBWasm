@@ -134,10 +134,11 @@ static const dynamic_link_descriptor MallocLinkTable[] = {
 void initialize_handler_pointers() {
     __TBB_ASSERT(allocate_handler == &initialize_allocate_handler, nullptr);
 #ifdef __EMSCRIPTEN__
-        allocate_handler_unsafe = &std::malloc;
-        deallocate_handler = &std::free;
-        cache_aligned_allocate_handler_unsafe = &std_cache_aligned_allocate;
-        cache_aligned_deallocate_handler = &std_cache_aligned_deallocate;
+    bool success = true;
+    allocate_handler_unsafe = &std::malloc;
+    deallocate_handler = &std::free;
+    cache_aligned_allocate_handler_unsafe = &std_cache_aligned_allocate;
+    cache_aligned_deallocate_handler = &std_cache_aligned_deallocate;
 #else
     bool success = dynamic_link(MALLOCLIB_NAME, MallocLinkTable, 4);
     if(!success) {
@@ -150,12 +151,11 @@ void initialize_handler_pointers() {
         cache_aligned_allocate_handler_unsafe = &std_cache_aligned_allocate;
         cache_aligned_deallocate_handler = &std_cache_aligned_deallocate;
     }
-
+#endif
     allocate_handler.store(allocate_handler_unsafe, std::memory_order_release);
     cache_aligned_allocate_handler.store(cache_aligned_allocate_handler_unsafe, std::memory_order_release);
 
     PrintExtraVersionInfo( "ALLOCATOR", success?"scalable_malloc":"malloc" );
-#endif
 }
 
 static std::once_flag initialization_state;
