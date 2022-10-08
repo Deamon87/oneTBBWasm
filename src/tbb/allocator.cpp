@@ -133,7 +133,7 @@ static const dynamic_link_descriptor MallocLinkTable[] = {
     If that allocator is not found, it links to malloc and free. */
 void initialize_handler_pointers() {
     __TBB_ASSERT(allocate_handler == &initialize_allocate_handler, nullptr);
-#ifdef __EMISCRIPTEN__
+#ifdef __EMSCRIPTEN__
         allocate_handler_unsafe = &std::malloc;
         deallocate_handler = &std::free;
         cache_aligned_allocate_handler_unsafe = &std_cache_aligned_allocate;
