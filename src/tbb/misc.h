@@ -35,7 +35,7 @@
 #include <atomic>
 
 // Does the operating system have a system call to pin a thread to a set of OS processors?
-#define __TBB_OS_AFFINITY_SYSCALL_PRESENT ((__linux__ && !__ANDROID__) || (__FreeBSD_version >= 701000))
+#define __TBB_OS_AFFINITY_SYSCALL_PRESENT ((__linux__ && !__ANDROID__ && !__EMSCRIPTEN__) || (__FreeBSD_version >= 701000))
 // On IBM* Blue Gene* CNK nodes, the affinity API has restrictions that prevent its usability for TBB,
 // and also sysconf(_SC_NPROCESSORS_ONLN) already takes process affinity into account.
 #define __TBB_USE_OS_AFFINITY_SYSCALL (__TBB_OS_AFFINITY_SYSCALL_PRESENT && !__bg__)

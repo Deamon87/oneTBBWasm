@@ -224,7 +224,10 @@ int AvailableHwConcurrency() {
     int n = sysconf(_SC_NPROCESSORS_ONLN);
     return (n > 0) ? n : 1;
 }
-
+#elif defined(__EMSCRIPTEN__)
+int AvailableHwConcurrency() {
+    return 1;
+}
 #elif _WIN32||_WIN64
 
 static std::atomic<do_once_state> hardware_concurrency_info;

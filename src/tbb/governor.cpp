@@ -418,6 +418,10 @@ int  core_types_count = 0;
 int* core_types_indexes = nullptr;
 
 const char* load_tbbbind_shared_object() {
+#ifdef __EMSCRIPTEN__
+    return nullptr;
+#endif
+
 #if _WIN32 || _WIN64 || __unix__
 #if _WIN32 && !_WIN64
     // For 32-bit Windows applications, process affinity masks can only support up to 32 logical CPUs.

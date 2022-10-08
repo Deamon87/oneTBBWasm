@@ -70,6 +70,10 @@ const ::rml::versioned_object::version_type CLIENT_VERSION = 2;
 #endif /* __TBB_WEAK_SYMBOLS_PRESENT */
 
 ::rml::factory::status_type FACTORY::open() {
+#if __EMSCRIPTEN__
+    library_handle = nullptr;
+    return st_not_found;
+#endif
     // Failure of following assertion indicates that factory is already open, or not zero-inited.
     __TBB_ASSERT_EX( !library_handle, nullptr);
     status_type (*open_factory_routine)( factory&, version_type&, version_type );
