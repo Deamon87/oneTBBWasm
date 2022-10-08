@@ -485,7 +485,7 @@ public:
     }
 
     size_type size() const noexcept {
-        return std::min(this->my_size.load(std::memory_order_acquire), capacity());
+        return std::min<size_type>(this->my_size.load(std::memory_order_acquire), capacity());
     }
 
     size_type max_size() const noexcept {
@@ -921,7 +921,7 @@ private:
             // If n > segment_size(n) => we need to destroy all of the items in the first segment
             // Otherwise, we need to destroy only items with the index < n
             size_type n_segment = this->segment_index_of(n - 1);
-            size_type last_index_to_destroy = std::min(this->segment_base(n_segment) + this->segment_size(n_segment), old_size);
+            size_type last_index_to_destroy = std::min<size_type>(this->segment_base(n_segment) + this->segment_size(n_segment), old_size);
             // Destroy elements in curr segment
             for (size_type idx = n; idx < last_index_to_destroy; ++idx) {
                 segment_table_allocator_traits::destroy(base_type::get_allocator(), &base_type::template internal_subscript</*allow_out_of_range_access=*/false>(idx));
@@ -965,7 +965,7 @@ private:
 
         // First segment optimization
         if (k != first_block && k) {
-            size_type max_block = std::max(first_block, k);
+            size_type max_block = std::max<segment_index_type>(first_block, k);
 
             auto buffer_table = segment_table_allocator_traits::allocate(base_type::get_allocator(), max_block);
 
@@ -978,7 +978,7 @@ private:
             this->my_first_block.store(k, std::memory_order_relaxed);
             size_type index = 0;
             try_call( [&] {
-                for (; index < std::min(this->segment_size(max_block), curr_size); ++index) {
+                for (; index < std::min<size_type>(this->segment_size(max_block), curr_size); ++index) {
                     auto element_address = &static_cast<base_type*>(this)->operator[](index);
                     segment_index_type seg_idx = this->segment_index_of(index);
                     segment_table_allocator_traits::construct(base_type::get_allocator(), element_address,
