@@ -634,7 +634,7 @@ private:
         size_type curr_segment_base = this->segment_base(seg_index);
 
         if (seg_index == 0) {
-            return std::min(curr_vector_size, this->segment_size(seg_index));
+            return std::min<size_type>(curr_vector_size, this->segment_size(seg_index));
         } else {
             // Perhaps the segment is allocated, but there are no elements in it.
             if (curr_vector_size < curr_segment_base) {
