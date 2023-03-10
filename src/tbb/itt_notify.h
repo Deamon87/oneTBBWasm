@@ -23,7 +23,7 @@
 
 #if _WIN32||_WIN64
     #ifndef UNICODE
-        #define UNICODE
+//        #define UNICODE
     #endif
 #endif /* WIN */
 
@@ -53,9 +53,9 @@ namespace r1 {
 #if (_WIN32||_WIN64)
     //! Unicode character type. Always wchar_t on Windows.
     /** We do not use typedefs from Windows TCHAR family to keep consistence of TBB coding style. **/
-    using tchar = wchar_t;
+    using tchar = char;
     //! Standard Windows macro to markup the string literals.
-    #define _T(string_literal) L ## string_literal
+    #define _T(string_literal) string_literal
 #else /* !WIN */
     using tchar = char;
     //! Standard Windows style macro to markup the string literals.
