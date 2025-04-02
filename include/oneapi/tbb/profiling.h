@@ -48,7 +48,7 @@ inline namespace d0 {
 //! Unicode support
 #if (_WIN32||_WIN64)
     //! Unicode character type. Always wchar_t on Windows.
-    using tchar = wchar_t;
+    using tchar = char;
 #else /* !WIN */
     using tchar = char;
 #endif /* !WIN */
