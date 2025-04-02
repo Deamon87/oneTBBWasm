@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 Intel Corporation
+# Copyright (c) 2020-2025 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5.0...3.31.3)
 
 project(sudoku CXX)
 
@@ -32,6 +32,10 @@ endif()
 set(EXECUTABLE "$<TARGET_FILE:sudoku>")
 set(ARGS 4 ${CMAKE_CURRENT_SOURCE_DIR}/input1 verbose)
 set(PERF_ARGS auto ${CMAKE_CURRENT_SOURCE_DIR}/input1 silent)
+set(BENCHMARK_ARGS filename=${CMAKE_CURRENT_SOURCE_DIR}/input4 n-of-repeats=3)
 
 add_execution_target(run_sudoku sudoku ${EXECUTABLE} "${ARGS}")
 add_execution_target(perf_run_sudoku sudoku ${EXECUTABLE} "${PERF_ARGS}")
+
+add_execution_target(benchmark_sudoku sudoku ${EXECUTABLE} "${BENCHMARK_ARGS}")
+add_benchmark_target(benchmark_sudoku_data sudoku ${EXECUTABLE} "${BENCHMARK_ARGS}")

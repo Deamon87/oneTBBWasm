@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 Intel Corporation
+# Copyright (c) 2020-2025 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5.0...3.31.3)
 
 project(tachyon CXX)
 
@@ -39,7 +39,6 @@ add_executable(
     src/imageio.cpp
     src/imap.cpp
     src/intersect.cpp
-    src/jpeg.cpp
     src/light.cpp
     src/objbound.cpp
     src/parse.cpp
@@ -57,7 +56,7 @@ add_executable(
     src/ui.cpp
     src/util.cpp
     src/vector.cpp
-    src/vol.cpp 
+    src/vol.cpp
 )
 
 add_subdirectory(../../common/gui gui)
@@ -73,7 +72,11 @@ set(EXECUTABLE "$<TARGET_FILE:tachyon>")
 set(ARGS ${CMAKE_CURRENT_SOURCE_DIR}/dat/balls.dat)
 set(PERF_ARGS silent ${CMAKE_CURRENT_SOURCE_DIR}/dat/balls3.dat)
 set(LIGHT_ARGS ${CMAKE_CURRENT_SOURCE_DIR}/dat/model2.dat)
+set(BENCHMARK_ARGS no-bounding n-of-repeats=10 ${CMAKE_CURRENT_SOURCE_DIR}/dat/balls3.dat)
 
 add_execution_target(run_tachyon tachyon ${EXECUTABLE} "${ARGS}")
 add_execution_target(perf_run_tachyon tachyon ${EXECUTABLE} "${PERF_ARGS}")
 add_execution_target(light_test_tachyon tachyon ${EXECUTABLE} "${LIGHT_ARGS}")
+
+add_execution_target(benchmark_tachyon tachyon ${EXECUTABLE} "${BENCHMARK_ARGS}")
+add_benchmark_target(benchmark_tachyon_data tachyon ${EXECUTABLE} "${BENCHMARK_ARGS}")
